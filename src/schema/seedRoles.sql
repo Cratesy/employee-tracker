@@ -1,4 +1,4 @@
-USE employee_db;
+USE company_db;
 
 INSERT INTO role (title, salary, department_id) VALUES ('Sales Representative', '25000.00', '1');
 INSERT INTO role (title, salary, department_id) VALUES ('Sales Manager', '35000.00', '1');

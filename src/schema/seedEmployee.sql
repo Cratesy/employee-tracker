@@ -1,4 +1,4 @@
-USE employee_db;
+USE company_db;
 
 INSERT INTO employee (first_name, last_name, role_id) VALUES ('John', 'Smith', '7');
 INSERT INTO employee (first_name, last_name, role_id) VALUES ('Alice', 'Walker', '7');
