@@ -99,6 +99,18 @@ const init = async () => {
         const data = await db.query(query);
         console.table(data);
       }
+
+      if (answers.action === "viewAllRoles") {
+        const query = "SELECT id, title FROM role";
+        const data = await db.query(query);
+        console.table(data);
+      }
+
+      if (answers.action === "viewAllEmployees") {
+        const query = "SELECT id, first_name, last_name FROM employee";
+        const data = await db.query(query);
+        console.table(data);
+      }
     }
   }
 };
