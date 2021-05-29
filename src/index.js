@@ -261,6 +261,117 @@ const init = async () => {
         const addQuery = `INSERT INTO role (title, salary, department_id) VALUES ('${role}', '${salary}', '${id}');`;
         await db.query(addQuery);
       }
+
+      if (answers.action === "updateEmployee") {
+        const query = "SELECT id, first_name, last_name FROM employee";
+        const data = await db.query(query);
+        const choices = data.map((Employees) => {
+          return {
+            value: Employees.id,
+            name: `${Employees.id} ${Employees.first_name} ${Employees.last_name}`,
+          };
+        });
+
+        const updateQuestion = [
+          {
+            type: "list",
+            name: "id",
+            message: "which employee would you like to update?",
+            choices,
+          },
+          {
+            type: "input",
+            name: "firstName",
+            message: "what would you like to update the first name too?",
+          },
+          {
+            type: "input",
+            name: "lastName",
+            message: "what would you like to update the last name too?",
+          },
+        ];
+
+        const { firstName, lastName, id } = await inquirer.prompt(
+          updateQuestion
+        );
+
+        const addQuery = `UPDATE employee SET first_name = '${firstName}', last_name = '${lastName}' WHERE id = '${id}'`;
+        await db.query(addQuery);
+      }
+
+      if (answers.action === "updateEmployeeRole") {
+        const query = "SELECT id, first_name, last_name FROM employee";
+        const data = await db.query(query);
+
+        const choices = data.map((Employees) => {
+          return {
+            value: Employees.id,
+            name: `${Employees.id} ${Employees.first_name} ${Employees.last_name}`,
+          };
+        });
+
+        const query2 = "SELECT id, title FROM role";
+        const data2 = await db.query(query2);
+
+        const choices2 = data2.map((Roles) => {
+          return {
+            value: Roles.id,
+            name: `${Roles.id} ${Roles.title}`,
+          };
+        });
+
+        const updateQuestion = [
+          {
+            type: "list",
+            name: "id",
+            message: "which employee would you like to update?",
+            choices,
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "what role would you like to add?",
+            choices: choices2,
+          },
+        ];
+
+        const { role, id } = await inquirer.prompt(updateQuestion);
+        console.log(role, id);
+
+        const addQuery = `UPDATE employee SET role_id = '${role}'  WHERE id = '${id}'`;
+        await db.query(addQuery);
+      }
+
+      if (answers.action === "updateEmployeeManager") {
+        const query = "SELECT id, first_name, last_name FROM employee";
+        const data = await db.query(query);
+        const choices = data.map((Employees) => {
+          return {
+            value: Employees.id,
+            name: `${Employees.id} ${Employees.first_name} ${Employees.last_name}`,
+          };
+        });
+
+        const updateQuestion = [
+          {
+            type: "list",
+            name: "id",
+            message: "which employee would you like to update there manager?",
+            choices,
+          },
+          {
+            type: "list",
+            name: "role_id",
+            message: "who is there manager?",
+            choices,
+          },
+        ];
+
+        const { role_id, id } = await inquirer.prompt(updateQuestion);
+
+        const addQuery = `UPDATE employee SET manager_id = '${role_id}' WHERE id = '${id}'`;
+        await db.query(addQuery);
+      }
     }
   }
 };
