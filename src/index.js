@@ -177,6 +177,90 @@ const init = async () => {
         const deleteQuery = `DELETE FROM role WHERE id = ${id}`;
         await db.query(deleteQuery);
       }
+
+      if (answers.action === "addDepartment") {
+        const addQuestion = {
+          type: "input",
+          name: "add",
+          message: "whats the name of the department you like to add?",
+        };
+
+        const { add } = await inquirer.prompt(addQuestion);
+
+        const addQuery = `INSERT INTO department (name) VALUES ('${add}')`;
+        await db.query(addQuery);
+      }
+
+      if (answers.action === "addEmployee") {
+        const query = "SELECT * FROM role";
+        const data = await db.query(query);
+        const choices = data.map((role) => {
+          return {
+            value: role.id,
+            name: `${role.id} ${role.title}`,
+          };
+        });
+
+        const addQuestion = [
+          {
+            type: "input",
+            name: "first",
+            message: "whats the first name of the employee you like to add?",
+          },
+          {
+            type: "input",
+            name: "last",
+            message: "whats the last name of the employee you like to add?",
+          },
+          {
+            type: "list",
+            name: "id",
+            message: "whats the role of the employee?",
+            choices,
+          },
+        ];
+
+        const { first, last, id } = await inquirer.prompt(addQuestion);
+
+        const addQuery = `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${first}', '${last}', '${id}');
+        `;
+        await db.query(addQuery);
+      }
+
+      if (answers.action === "addRole") {
+        const query = "SELECT * FROM department";
+        const data = await db.query(query);
+        const choices = data.map((department) => {
+          return {
+            value: department.id,
+            name: `${department.id} ${department.name}`,
+          };
+        });
+
+        const addQuestion = [
+          {
+            type: "input",
+            name: "role",
+            message: "whats the name of the role you like to add?",
+          },
+          {
+            type: "input",
+            name: "salary",
+            message: "whats the salary of the role?",
+          },
+          {
+            type: "list",
+            name: "id",
+            message: "whats the department of the role?",
+            choices,
+          },
+        ];
+
+        const { role, salary, id } = await inquirer.prompt(addQuestion);
+
+        const addQuery = `INSERT INTO role (title, salary, department_id) VALUES ('${role}', '${salary}', '${id}');`;
+        await db.query(addQuery);
+      }
     }
   }
 };
