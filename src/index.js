@@ -111,6 +111,72 @@ const init = async () => {
         const data = await db.query(query);
         console.table(data);
       }
+
+      if (answers.action === "removeEmployee") {
+        const query = "SELECT * FROM employee";
+        const data = await db.query(query);
+        const choices = data.map((employee) => {
+          return {
+            value: employee.id,
+            name: `${employee.first_name} ${employee.last_name}`,
+          };
+        });
+
+        const deleteQuestion = {
+          type: "list",
+          name: "id",
+          message: "which employee would you like to delete?",
+          choices,
+        };
+        const { id } = await inquirer.prompt(deleteQuestion);
+
+        const deleteQuery = `DELETE FROM employee WHERE id = ${id}`;
+        await db.query(deleteQuery);
+      }
+
+      if (answers.action === "removeDepartment") {
+        const query = "SELECT * FROM department";
+        const data = await db.query(query);
+        const choices = data.map((department) => {
+          return {
+            value: department.id,
+            name: `${department.id} ${department.name}`,
+          };
+        });
+
+        const deleteQuestion = {
+          type: "list",
+          name: "id",
+          message: "which department would you like to delete?",
+          choices,
+        };
+        const { id } = await inquirer.prompt(deleteQuestion);
+
+        const deleteQuery = `DELETE FROM department WHERE id = ${id}`;
+        await db.query(deleteQuery);
+      }
+
+      if (answers.action === "removeRole") {
+        const query = "SELECT * FROM role";
+        const data = await db.query(query);
+        const choices = data.map((role) => {
+          return {
+            value: role.id,
+            name: `${role.id} ${role.title}`,
+          };
+        });
+
+        const deleteQuestion = {
+          type: "list",
+          name: "id",
+          message: "which role would you like to delete?",
+          choices,
+        };
+        const { id } = await inquirer.prompt(deleteQuestion);
+
+        const deleteQuery = `DELETE FROM role WHERE id = ${id}`;
+        await db.query(deleteQuery);
+      }
     }
   }
 };
