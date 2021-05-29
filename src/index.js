@@ -336,7 +336,6 @@ const init = async () => {
         ];
 
         const { role, id } = await inquirer.prompt(updateQuestion);
-        console.log(role, id);
 
         const addQuery = `UPDATE employee SET role_id = '${role}'  WHERE id = '${id}'`;
         await db.query(addQuery);
@@ -371,6 +370,58 @@ const init = async () => {
 
         const addQuery = `UPDATE employee SET manager_id = '${role_id}' WHERE id = '${id}'`;
         await db.query(addQuery);
+      }
+
+      if (answers.action === "viewAllEmployeesByDepartment") {
+        const query = "SELECT * FROM department";
+        const data = await db.query(query);
+        const choices = data.map((department) => {
+          return {
+            value: department.id,
+            name: `${department.id} ${department.name}`,
+          };
+        });
+
+        const viewQuestion = [
+          {
+            type: "list",
+            name: "id",
+            message: "which department would you like to see?",
+            choices,
+          },
+        ];
+
+        const { id } = await inquirer.prompt(viewQuestion);
+
+        const addQuery = `SELECT id, first_name, last_name FROM employee where role_id = '${id}'`;
+        const data2 = await db.query(addQuery);
+        console.table(data2);
+      }
+
+      if (answers.action === "viewAllEmployeesByRole") {
+        const query = "SELECT * FROM role";
+        const data = await db.query(query);
+        const choices = data.map((role) => {
+          return {
+            value: role.id,
+            name: `${role.id} ${role.title}`,
+          };
+        });
+
+        const viewQuestion = [
+          {
+            type: "list",
+            name: "id",
+            message: "which role would you like to the employees for?",
+            choices,
+          },
+        ];
+
+        const { id } = await inquirer.prompt(viewQuestion);
+
+        const addQuery = `SELECT id, first_name, last_name FROM employee where role_id = '${id}'`;
+        const data2 = await db.query(addQuery);
+        console.table(data2);
       }
     }
   }
