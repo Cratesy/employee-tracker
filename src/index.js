@@ -423,6 +423,24 @@ const init = async () => {
         const data2 = await db.query(addQuery);
         console.table(data2);
       }
+
+      if (answers.action === "viewBudget") {
+        const departmentsBudget = `SELECT SUM(X.salary) as total_budget,
+        X.department_name,
+      X.department_id
+   FROM (
+          SELECT A.salary AS salary, 
+          A.title AS title, 
+          B.name AS department_name, 
+          B.id AS department_id
+     FROM company_db.role A
+     LEFT JOIN company_db.department B
+     ON A.department_id = B.id
+        ) X
+      GROUP BY X.department_id;`;
+        const totalBudgetData = await db.query(departmentsBudget);
+        console.table(totalBudgetData);
+      }
     }
   }
 };
