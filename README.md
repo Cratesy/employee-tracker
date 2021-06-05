@@ -16,7 +16,7 @@
 
 ## Description
 
-I've been tasked with making making a command-line application that allows the user to;
+I've been tasked with making a command-line application that allows the user to;
 
 - add departments/roles/employees
 - remove departments/roles/employees
